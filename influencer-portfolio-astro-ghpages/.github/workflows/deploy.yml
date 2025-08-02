@@ -1,0 +1,51 @@
+name: Build & Deploy (Pages) + Update metrics
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */12 * * *" # cada 12 horas (ajusta si quieres)
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Update metrics.json (optional)
+        run: node scripts/fetch-metrics.js
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          TT_TOKEN: ${{ secrets.TT_TOKEN }}
+          YT_KEY:   ${{ secrets.YT_KEY }}
+
+      - name: Commit metrics (if changed)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/data/metrics.json
+          git commit -m "chore: update metrics [skip ci]" || echo "No changes to commit"
+          git push
+
+      - name: Build & Deploy to GitHub Pages
+        uses: withastro/action@v2
+        with:
+          path: .
+          node-version: 20
+          package-manager: npm
+          deploy-to-github-pages: true

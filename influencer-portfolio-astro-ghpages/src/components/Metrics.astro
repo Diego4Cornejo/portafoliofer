@@ -1,0 +1,76 @@
+---
+---
+<section class="section" id="metricas">
+  <div class="container-narrow">
+    <h2 class="h2 mb-2">Números que importan</h2>
+    <p class="lead mb-8">Métricas promedio de los últimos contenidos. Se actualizan automáticamente.</p>
+
+    <div class="grid grid-cols-2 gap-4 md:grid-cols-4" id="counters">
+      <div class="card p-5 text-center">
+        <div class="text-3xl font-bold" id="igFollowers">—</div>
+        <div class="mt-1 text-sm text-gray-500">Instagram seguidores</div>
+      </div>
+      <div class="card p-5 text-center">
+        <div class="text-3xl font-bold" id="ttFollowers">—</div>
+        <div class="mt-1 text-sm text-gray-500">TikTok seguidores</div>
+      </div>
+      <div class="card p-5 text-center">
+        <div class="text-3xl font-bold" id="avgFood">—</div>
+        <div class="mt-1 text-sm text-gray-500">Vistas promedio (comida)</div>
+      </div>
+      <div class="card p-5 text-center">
+        <div class="text-3xl font-bold" id="avgOther">—</div>
+        <div class="mt-1 text-sm text-gray-500">Vistas promedio (otros)</div>
+      </div>
+    </div>
+
+    <div class="mt-10 card p-6">
+      <h3 class="h3 mb-4">Tendencia de vistas</h3>
+      <canvas id="viewsChart" height="120"></canvas>
+      <p class="mt-2 text-xs text-gray-500" id="lastUpdated">Actualizado: —</p>
+    </div>
+  </div>
+
+  <script type="module">
+    async function load() {
+      try {
+        const res = await fetch('data/metrics.json', { cache: 'no-cache' });
+        const data = await res.json();
+
+        const fmt = (n) => new Intl.NumberFormat('es-CL').format(n);
+
+        document.getElementById('igFollowers').textContent = data.instagram?.followers ? fmt(data.instagram.followers) : '—';
+        document.getElementById('ttFollowers').textContent = data.tiktok?.followers ? fmt(data.tiktok.followers) : '—';
+        document.getElementById('avgFood').textContent = data.instagram?.avgViewsFood ? fmt(data.instagram.avgViewsFood) : '—';
+        document.getElementById('avgOther').textContent = data.instagram?.avgViewsOther ? fmt(data.instagram.avgViewsOther) : '—';
+        document.getElementById('lastUpdated').textContent = 'Actualizado: ' + (data.updatedAt || '—');
+
+        const labels = (data.topHighlights || []).map(h => h.title);
+        const values = (data.topHighlights || []).map(h => h.views);
+
+        const { default: Chart } = await import('https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js');
+        const ctx = document.getElementById('viewsChart');
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels,
+            datasets: [{
+              label: 'Vistas',
+              data: values
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: { beginAtZero: true }
+            }
+          }
+        });
+      } catch (e) {
+        console.error('Error cargando métricas', e);
+      }
+    }
+    load();
+  </script>
+</section>

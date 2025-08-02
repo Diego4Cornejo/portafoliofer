@@ -1,0 +1,24 @@
+---
+const { name = 'Nombre Influencer', whatsapp = '56911111111' } = Astro.props;
+const waUrl = `https://wa.me/${whatsapp}?text=${encodeURIComponent('Hola, quiero cotizar una colaboración 🙌')}`;
+---
+<section class="section" id="inicio">
+  <div class="container-narrow grid items-center gap-10 md:grid-cols-2">
+    <div>
+      <span class="tag mb-4">Food & Lifestyle</span>
+      <h1 class="h1 mb-4">Contenido con sabor a vida real</h1>
+      <p class="lead mb-6">Soy {name}. Creo historias que antojan y convierten, con foco en restaurantes, cafeterías y marcas locales.</p>
+      <div class="flex flex-wrap gap-3">
+        <a href={waUrl} target="_blank" rel="noreferrer" class="btn btn-primary">Hablemos por WhatsApp</a>
+        <a href="#servicios" class="btn btn-secondary">Ver servicios</a>
+      </div>
+      <p class="mt-3 text-sm text-gray-500">¿Marca o local en Santiago? Agenda tu fecha para este mes.</p>
+    </div>
+    <div class="relative">
+      <img class="w-full rounded-3xl shadow-lg" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1400&auto=format&fit=crop" alt="Hero" loading="lazy" />
+      <div class="absolute -bottom-4 right-6 rounded-2xl bg-white/90 px-4 py-2 shadow">
+        <span class="text-sm">+120K vistas últimas 4 semanas</span>
+      </div>
+    </div>
+  </div>
+</section>

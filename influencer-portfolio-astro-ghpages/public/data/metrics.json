@@ -1,0 +1,31 @@
+{
+  "updatedAt": "2025-08-01T12:00:00Z",
+  "instagram": {
+    "followers": 24500,
+    "avgViewsFood": 80000,
+    "avgViewsOther": 15000,
+    "engagement": 4.2
+  },
+  "tiktok": {
+    "followers": 26000,
+    "avgViews": 70000
+  },
+  "youtube": {
+    "subs": 8500,
+    "avgViews": 6000
+  },
+  "topHighlights": [
+    {
+      "title": "Reel ramen",
+      "views": 120000
+    },
+    {
+      "title": "Tour cafeter\u00edas",
+      "views": 90000
+    },
+    {
+      "title": "Postre viral",
+      "views": 110000
+    }
+  ]
+}
