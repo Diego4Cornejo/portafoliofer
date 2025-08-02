@@ -1,51 +1,54 @@
-# Influencer Landing Page
+# Portafolio de Influencer (Astro + Tailwind) — listo para GitHub Pages
 
-This project is a simple landing page designed for an influencer. It showcases their brand, content, and provides a way for visitors to connect with them.
+Landing rápida, estática y con métricas actualizables por **GitHub Actions**.
 
-## Project Structure
+## 🚀 Stack
+- [Astro](https://astro.build/) (SSG) + Tailwind
+- Chart.js por CDN (ligero, sólo para el gráfico de vistas)
+- `public/data/metrics.json` como fuente de datos
+- Workflow de GitHub Actions para actualizar métricas y desplegar a GitHub Pages
 
+## 📦 Cómo usar
+1. **Crea un repo** en tu cuenta (p. ej. `influencer-portfolio`).
+2. Sube este proyecto y asegúrate que la rama por defecto sea **main**.
+3. En **Settings → Pages**, selecciona **Build and deployment → GitHub Actions**.
+4. (Opcional) En **Settings → Secrets and variables → Actions → New repository secret**, crea:
+   - `IG_TOKEN`
+   - `TT_TOKEN`
+   - `YT_KEY`
+5. Cada _push_ a `main` o el cron (**cada 12 horas**) ejecutará:
+   - `scripts/fetch-metrics.js` (por ahora escribe datos de ejemplo)
+   - `astro build` y publicará a GitHub Pages.
+
+> **Nota:** El `astro.config.mjs` ajusta `base` automáticamente cuando se construye en GitHub Actions, por lo que funcionará tanto con dominio propio como con `user.github.io/repo`.
+
+## ✏️ Personalización rápida
+- Edita CTA y WhatsApp en `src/components/Hero.astro` y `src/components/Footer.astro`.
+- Cambia textos, servicios y testimonios en sus respectivos componentes.
+- Reemplaza imágenes por las tuyas (puedes dejarlas remotas o subirlas a `public/`).
+- Cambia colores globales en `src/styles/global.css` (o usa variables CSS).
+
+## 🧪 Local
+```bash
+npm install
+npm run dev
 ```
-influencer-landing-page
-├── src
-│   ├── index.html        # Main HTML document for the landing page
-│   ├── css
-│   │   └── style.css     # Styles for the landing page
-│   └── js
-│       └── main.js       # JavaScript functionality for the landing page
-├── .gitignore            # Specifies files to ignore in Git
-└── README.md             # Documentation for the project
+
+## 🛠️ Producción
+```bash
+npm run build
+# El workflow se encarga de publicar a Pages
 ```
 
-## Features
+## 🔒 Tokens y APIs
+No se exponen tokens en el front. `fetch-metrics.js` usa **secrets** y escribe `public/data/metrics.json`. Luego, el sitio consume ese JSON de forma estática.
 
-- Responsive design that adapts to different screen sizes.
-- Smooth scrolling and animations for a better user experience.
-- Sections for showcasing content, social media links, and contact information.
+## 🧩 TODO (si quieres llevarlo más lejos)
+- Formulario de brief con servicio externo (Formspree / Netlify Forms) o funciones serverless (migrando a Vercel/Netlify).
+- Dashboard privado de campañas.
+- Sección de prensa con logos e imágenes reales.
+- i18n (ES/EN).
 
-## Setup Instructions
+---
 
-1. Clone the repository to your local machine:
-   ```
-   git clone https://github.com/yourusername/influencer-landing-page.git
-   ```
-   
-2. Navigate to the project directory:
-   ```
-   cd influencer-landing-page
-   ```
-
-3. Open the `src/index.html` file in your web browser to view the landing page.
-
-## Deployment
-
-To deploy the landing page on GitHub Pages:
-
-1. Push your code to a GitHub repository.
-2. Go to the repository settings.
-3. Scroll down to the "GitHub Pages" section.
-4. Select the branch you want to deploy from (usually `main` or `master`).
-5. Save the settings and your site will be live at `https://yourusername.github.io/influencer-landing-page`.
-
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
+Hecho con cariño 💙. Si necesitas que lo deje con tu branding y copies finales, dime tu **nombre público, color principal, email y WhatsApp**.
