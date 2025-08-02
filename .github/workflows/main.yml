@@ -1,51 +1,58 @@
-name: Build & Deploy (Pages) + Update metrics
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
   schedule:
-    - cron: "0 */12 * * *" # cada 12 horas (ajusta si quieres)
+    - cron: "0 */12 * * *"   # opcional: actualiza métricas cada 12 h
 
 permissions:
-  contents: write
+  contents: write   # write si quieres commitear metrics.json (opcional)
   pages: write
   id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node
+      # (Opcional) refresca metrics.json antes de compilar
+      - name: Setup Node for metrics script
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
-      - name: Install deps
-        run: npm ci
-
-      - name: Update metrics.json (optional)
+      - name: Update metrics.json
         run: node scripts/fetch-metrics.js
-        env:
-          IG_TOKEN: ${{ secrets.IG_TOKEN }}
-          TT_TOKEN: ${{ secrets.TT_TOKEN }}
-          YT_KEY:   ${{ secrets.YT_KEY }}
 
-      - name: Commit metrics (if changed)
+      # Instala, build y sube el artefacto para Pages
+      - name: Install, build and upload
+        uses: withastro/action@v4
+        with:
+          node-version: 20
+          path: .
+
+      # (Opcional) persiste el metrics.json en el repo
+      - name: Commit metrics (optional)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/data/metrics.json
-          git commit -m "chore: update metrics [skip ci]" || echo "No changes to commit"
-          git push
+          git add public/data/metrics.json || true
+          git commit -m "chore: update metrics [skip ci]" || true
+          git push || true
 
-      - name: Build & Deploy to GitHub Pages
-        uses: withastro/action@v2
-        with:
-          path: .
-          node-version: 20
-          package-manager: npm
-          deploy-to-github-pages: true
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
