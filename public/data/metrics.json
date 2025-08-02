@@ -1,31 +1,31 @@
 {
-  "updatedAt": "2025-08-01T12:00:00Z",
+  "updatedAt": "2025-08-02T03:43:50.169Z",
   "instagram": {
-    "followers": 24500,
-    "avgViewsFood": 80000,
-    "avgViewsOther": 15000,
-    "engagement": 4.2
+    "followers": 25000,
+    "avgViewsFood": 90000,
+    "avgViewsOther": 16000,
+    "engagement": 4.1
   },
   "tiktok": {
-    "followers": 26000,
-    "avgViews": 70000
+    "followers": 27000,
+    "avgViews": 72000
   },
   "youtube": {
-    "subs": 8500,
-    "avgViews": 6000
+    "subs": 9000,
+    "avgViews": 6500
   },
   "topHighlights": [
     {
       "title": "Reel ramen",
-      "views": 120000
+      "views": 125000
     },
     {
-      "title": "Tour cafeter\u00edas",
-      "views": 90000
+      "title": "Tour cafeterías",
+      "views": 98000
     },
     {
       "title": "Postre viral",
-      "views": 110000
+      "views": 112000
     }
   ]
 }
